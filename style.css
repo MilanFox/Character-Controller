@@ -1,0 +1,38 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Killig';
+  src: url('assets/fonts/Killig.ttf') format('truetype');
+  font-weight: normal;
+}
+
+body {
+  --color-checker-light: #333333;
+  --color-checker-dark: #393939;
+  --checker-size: 30px;
+
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-checker-dark);
+  background-image: linear-gradient(45deg, var(--color-checker-light) 25%, transparent 25%),
+  linear-gradient(135deg, var(--color-checker-light) 25%, transparent 25%),
+  linear-gradient(45deg, transparent 75%, var(--color-checker-light) 75%),
+  linear-gradient(135deg, transparent 75%, var(--color-checker-light) 75%);
+  background-size: var(--checker-size) var(--checker-size);
+  background-position: 0 0, calc(var(--checker-size) / 2) 0, calc(var(--checker-size) / 2) calc(var(--checker-size) / 2), 0 calc(var(--checker-size) / 2);
+}
+
+canvas {
+  position: absolute;
+}
+
+#tutorial {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  color: white;
+  font-family: "Killig", serif;
+  font-size: 2rem;
+}

@@ -1,15 +1,19 @@
 import { usePlayer } from '../usePlayer/usePlayer.js';
 import { useCanvas } from '../useCanvas/useCanvas.js';
 import { useEntity } from '../useEntity/useEntity.js';
+import { useTerrainGeneration } from '../useTerrain/useTerrainGeneration.js';
 
 export const useGameLoop = () => {
   const { player } = usePlayer();
   const { entityCanvas, backgroundAmbientCanvas, drawEntity } = useCanvas();
   const { entities } = useEntity();
+  const { ambientEffects } = useTerrainGeneration();
 
   const drawFrame = () => {
     entityCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
+    backgroundAmbientCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
     drawEntity(player, entityCanvas);
+    ambientEffects.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
   };
 
   const runGameLoop = () => {

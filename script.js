@@ -2,7 +2,7 @@ import { useCanvas } from './script/useCanvas/useCanvas.js';
 import { useGameLoop } from './script/useGameLoop/useGameLoop.js';
 import { keys } from './script/useKeyboard/useKeyboard.js';
 
-const { setCanvasSize } = useCanvas();
+const { setCanvasSize, drawTerrain } = useCanvas();
 const { runGameLoop } = useGameLoop();
 
 document.addEventListener('keydown', (e) => {
@@ -16,5 +16,6 @@ document.addEventListener('keyup', (e) => {
 window.addEventListener('resize', setCanvasSize);
 
 setCanvasSize();
+drawTerrain();
 runGameLoop();
 

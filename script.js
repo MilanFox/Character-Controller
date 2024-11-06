@@ -1,9 +1,6 @@
-import { useCanvas } from './script/useCanvas/useCanvas.js';
-import { useGameLoop } from './script/useGameLoop/useGameLoop.js';
 import { keys } from './script/useKeyboard/useKeyboard.js';
-
-const { setCanvasSize, drawTerrain } = useCanvas();
-const { runGameLoop } = useGameLoop();
+import { drawTerrain, setCanvasSize } from './script/useCanvas/useCanvas.js';
+import { runGameLoop } from './script/useGameLoop/useGameLoop.js';
 
 document.addEventListener('keydown', (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = true;

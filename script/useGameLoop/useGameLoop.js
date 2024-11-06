@@ -1,29 +1,21 @@
-import { usePlayer } from '../usePlayer/usePlayer.js';
-import { useCanvas } from '../useCanvas/useCanvas.js';
-import { useEntity } from '../useEntity/useEntity.js';
-import { useTerrainGeneration } from '../useTerrain/useTerrainGeneration.js';
+import { backgroundAmbientCanvas, drawEntity, entityCanvas } from '../useCanvas/useCanvas.js';
+import { entities } from '../useEntity/useEntity.js';
+import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
+import { player } from '../usePlayer/usePlayer.js';
 
-export const useGameLoop = () => {
-  const { player } = usePlayer();
-  const { entityCanvas, backgroundAmbientCanvas, drawEntity } = useCanvas();
-  const { entities } = useEntity();
-  const { ambientEffects } = useTerrainGeneration();
-
-  const drawFrame = () => {
-    entityCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
-    backgroundAmbientCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
-    drawEntity(player, entityCanvas);
-    ambientEffects.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
-  };
-
-  const runGameLoop = () => {
-    entities.forEach(entity => {
-      entity.updateFrame();
-      entity.process?.();
-    });
-    drawFrame();
-    requestAnimationFrame(runGameLoop);
-  };
-
-  return { runGameLoop };
+const drawFrame = () => {
+  entityCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
+  backgroundAmbientCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
+  drawEntity(player, entityCanvas);
+  ambientEffects.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
 };
+
+export const runGameLoop = () => {
+  entities.forEach(entity => {
+    entity.updateFrame();
+    entity.process?.();
+  });
+  drawFrame();
+  requestAnimationFrame(runGameLoop);
+};
+

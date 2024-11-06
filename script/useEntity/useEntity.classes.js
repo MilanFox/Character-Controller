@@ -1,7 +1,6 @@
-import { useEntity } from './useEntity.js';
 import { keys } from '../useKeyboard/useKeyboard.js';
-
-const { register } = useEntity();
+import { register } from './useEntity.js';
+import { findCell, getTerrainType } from '../useTerrain/useTerrain.js';
 
 export class Entity {
   constructor({ x = 0, y = 0, width = 128, height = 128, speed = 2, totalFrames = 6, sprite }) {
@@ -65,8 +64,11 @@ export class Character extends Entity {
   }
 
   updatePosition() {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
+    const nextX = this.x + this.velocityX;
+    const nextY = this.y + this.velocityY;
+
+    if (getTerrainType(findCell({ x: nextX, y: this.y })) >= 0) this.x = nextX;
+    if (getTerrainType(findCell({ x: this.x, y: nextY })) >= 0) this.y = nextY;
   }
 
   updateAnimation() {

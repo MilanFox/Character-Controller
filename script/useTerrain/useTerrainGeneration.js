@@ -1,6 +1,6 @@
 import { Entity } from '../useEntity/useEntity.classes.js';
 
-export const ambientEffects = { entities: [] };
+export const ambientEffects = { background: { entities: [] }, terrain: { statics: [] } };
 
 export const getNeighbors = (pos, useDiagonals) => {
   if (useDiagonals) return [
@@ -21,7 +21,7 @@ export const getNeighbors = (pos, useDiagonals) => {
   ];
 };
 
-export const createIsland = (rows, cols) => {
+const createIsland = (rows, cols) => {
   const array = Array.from({ length: rows }, () => Array(cols).fill(-1));
 
   const randomizeLayer = (layer) => {
@@ -42,7 +42,11 @@ export const createIsland = (rows, cols) => {
 
   for (let j = 0; j < cols; j++) array[rows - 2][j] = -1;
 
-  const { edges, ocean } = findEdges(array);
+  return array;
+};
+
+export const postProcessMap = (map) => {
+  const { edges, ocean } = findEdges(map);
   const getFoamSpriteData = ({ x, y }) => ({
     x: x * 64 + 32,
     y: y * 64 + 32,
@@ -50,17 +54,56 @@ export const createIsland = (rows, cols) => {
     totalFrames: 8,
   });
 
-  ambientEffects.entities = edges.map((edge) => new Entity(getFoamSpriteData(edge)));
+  ambientEffects.background.entities = edges.map((edge) => new Entity(getFoamSpriteData(edge)));
 
-  for (let y = 0; y < array.length; y++) {
-    for (let x = 0; x < array[0].length; x++) {
-      if (array[y][x] === -1 && !ocean.some(tile => tile.y === y && tile.x === x)) {
-        array[y][x] = 0;
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[0].length; x++) {
+      if (map[y][x] === -1 && !ocean.some(tile => tile.y === y && tile.x === x)) {
+        map[y][x] = 0;
       }
     }
   }
+};
 
-  return array;
+const bridgeGap = (map) => {
+  const startX = Math.floor(map[0].length / 2);
+  const randomOffset = Math.floor(Math.random() * 5) - 2;
+  const y = Math.floor((map.length / 2)) + randomOffset;
+
+  const bridge = [];
+
+  const buildBridge = (x) => {
+    bridge.push({ x, y });
+    map[y][x] = 2;
+    for (const i of [-1, 1]) {
+      if (map[y][x + i] === -1) buildBridge(x + i);
+    }
+  };
+
+  buildBridge(startX);
+
+  bridge.sort((a, b) => a.x - b.x);
+  return { left: bridge.at(0), right: bridge.at(-1) };
+};
+
+export const createIslands = (totalRows, totalCols) => {
+  const cols = totalCols % 2 === 0 ? totalCols / 2 - 1 : Math.floor(totalCols / 2);
+  const islandA = createIsland(totalRows, cols);
+  const islandB = createIsland(totalRows, cols);
+  const map = islandA.map((row, i) => [...row, ...islandB[i]]);
+  postProcessMap(map);
+  const bridgeHeads = bridgeGap(map);
+  ambientEffects.terrain.statics.push({
+    x: bridgeHeads.left.x - 1,
+    y: bridgeHeads.left.y,
+    sprite: 'assets/sprites/terrain/bridge_head_l.png',
+  });
+  ambientEffects.terrain.statics.push({
+    x: bridgeHeads.right.x + 1,
+    y: bridgeHeads.right.y,
+    sprite: 'assets/sprites/terrain/bridge_head_r.png',
+  });
+  return map;
 };
 
 export const findEdges = (terrainMap) => {

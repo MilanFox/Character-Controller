@@ -7,7 +7,7 @@ const drawFrame = () => {
   entityCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
   backgroundAmbientCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
   drawEntity(player, entityCanvas);
-  ambientEffects.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
+  ambientEffects.background.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
 };
 
 export const runGameLoop = () => {

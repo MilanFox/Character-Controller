@@ -22,6 +22,7 @@ body {
   linear-gradient(135deg, transparent 75%, var(--color-checker-light) 75%);
   background-size: var(--checker-size) var(--checker-size);
   background-position: 0 0, calc(var(--checker-size) / 2) 0, calc(var(--checker-size) / 2) calc(var(--checker-size) / 2), 0 calc(var(--checker-size) / 2);
+  cursor: url('assets/ui/cursor.png') 22 17, auto;
 }
 
 canvas {

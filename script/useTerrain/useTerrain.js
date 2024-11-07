@@ -1,5 +1,5 @@
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
-import { createIsland, getNeighbors } from './useTerrainGeneration.js';
+import { ambientEffects, createIslands, getNeighbors } from './useTerrainGeneration.js';
 
 export let terrainMap = [[]];
 
@@ -7,7 +7,8 @@ export const updateTerrainMap = () => {
   const cols = Math.ceil(window.innerWidth / gridSize);
   const rows = Math.ceil(window.innerHeight / gridSize);
 
-  terrainMap = createIsland(rows, cols);
+  ambientEffects.terrain.statics.length = 0;
+  terrainMap = createIslands(rows, cols);
 };
 
 export const getConnectionType = (pos) => {

@@ -1,12 +1,20 @@
 import { gridSize } from './useCanvas.consts.js';
-import { getTerrainSprite, updateTerrainMap } from '../useTerrain/useTerrain.js';
+import { getTerrainSprite, terrainMap, updateTerrainMap } from '../useTerrain/useTerrain.js';
+import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
 
 export const entityCanvas = document.getElementById('entities');
 export const terrainCanvas = document.getElementById('terrain');
+export const terrainAmbientCanvas = document.getElementById('terrain-ambient');
 export const backgroundCanvas = document.getElementById('background');
 export const backgroundAmbientCanvas = document.getElementById('background-ambient');
 
-export const canvasLevels = [entityCanvas, terrainCanvas, backgroundCanvas, backgroundAmbientCanvas];
+export const canvasLevels = [
+  entityCanvas,
+  terrainCanvas,
+  terrainAmbientCanvas,
+  backgroundCanvas,
+  backgroundAmbientCanvas,
+];
 
 export const setCanvasSize = () => {
   canvasLevels.forEach(level => {
@@ -15,8 +23,8 @@ export const setCanvasSize = () => {
   });
 
   updateTerrainMap(gridSize);
-  drawBackground();
   drawTerrain();
+  drawBackground();
 };
 
 export const drawEntity = (entity, canvas) => {
@@ -36,21 +44,36 @@ export const drawEntity = (entity, canvas) => {
 
 export const drawTerrain = () => {
   const ctxTerrain = terrainCanvas.getContext('2d');
-  const spriteSheet = new Image();
+  const terrainSpriteSheet = new Image();
 
-  spriteSheet.onload = () => {
-    for (let x = 0; x < window.innerWidth; x += gridSize) {
-      for (let y = 0; y < window.innerHeight; y += gridSize) {
-        const { sx, sy, sWidth, sHeight } = getTerrainSprite({
-          pos: { x: x / gridSize, y: y / gridSize },
-          gridSize,
-        });
-        ctxTerrain.drawImage(spriteSheet, sx, sy, sWidth, sHeight, x, y, gridSize, gridSize);
+  /*terrainCanvas.getContext('2d').clearRect(0, 0, terrainCanvas.width, terrainCanvas.height);*/
+
+  terrainSpriteSheet.onload = () => {
+    for (let x = gridSize; x < window.innerWidth; x += gridSize) {
+      for (let y = gridSize; y < window.innerHeight; y += gridSize) {
+        if (terrainMap[y / gridSize][x / gridSize] < 0) {
+          console.log(y, x);
+          continue;
+        }
+        const pos = { x: x / gridSize, y: y / gridSize };
+        const { sx, sy, sWidth, sHeight } = getTerrainSprite({ pos, gridSize });
+        ctxTerrain.drawImage(terrainSpriteSheet, sx, sy, sWidth, sHeight, x, y, gridSize, gridSize);
       }
     }
   };
 
-  spriteSheet.src = 'assets/sprites/terrain/flat.png';
+  terrainSpriteSheet.src = 'assets/sprites/terrain/flat.png';
+
+  const ctxAmbientTerrain = terrainAmbientCanvas.getContext('2d');
+  /*ctxAmbientTerrain.clearRect(0, 0, terrainAmbientCanvas.width, terrainAmbientCanvas.height);*/
+
+  ambientEffects.terrain.statics.forEach(({ x, y, sprite }) => {
+    const spriteSrc = new Image();
+    spriteSrc.onload = () => {
+      ctxAmbientTerrain.drawImage(spriteSrc, 0, 0, gridSize, gridSize, x * gridSize, y * gridSize, gridSize, gridSize);
+    };
+    spriteSrc.src = sprite;
+  });
 };
 
 export const drawBackground = () => {

@@ -46,8 +46,6 @@ export const drawTerrain = () => {
   const ctxTerrain = terrainCanvas.getContext('2d');
   const terrainSpriteSheet = new Image();
 
-  /*terrainCanvas.getContext('2d').clearRect(0, 0, terrainCanvas.width, terrainCanvas.height);*/
-
   terrainSpriteSheet.onload = () => {
     for (let x = gridSize; x < window.innerWidth; x += gridSize) {
       for (let y = gridSize; y < window.innerHeight; y += gridSize) {
@@ -64,9 +62,11 @@ export const drawTerrain = () => {
 
   terrainSpriteSheet.src = 'assets/sprites/terrain/flat.png';
 
-  const ctxAmbientTerrain = terrainAmbientCanvas.getContext('2d');
-  /*ctxAmbientTerrain.clearRect(0, 0, terrainAmbientCanvas.width, terrainAmbientCanvas.height);*/
+  drawAmbientSprites();
+};
 
+const drawAmbientSprites = () => {
+  const ctxAmbientTerrain = terrainAmbientCanvas.getContext('2d');
   ambientEffects.terrain.statics.forEach(({ x, y, sprite }) => {
     const spriteSrc = new Image();
     spriteSrc.onload = () => {

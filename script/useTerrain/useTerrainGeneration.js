@@ -1,4 +1,5 @@
 import { Entity } from '../useEntity/useEntity.classes.js';
+import { gridSize } from '../useCanvas/useCanvas.consts.js';
 
 export const ambientEffects = { background: { entities: [] }, terrain: { statics: [] } };
 
@@ -92,6 +93,7 @@ export const createIslands = (totalRows, totalCols) => {
   const islandB = createIsland(totalRows, cols);
   const map = islandA.map((row, i) => [...row, ...islandB[i]]);
   postProcessMap(map);
+
   const bridgeHeads = bridgeGap(map);
   ambientEffects.terrain.statics.push({
     x: bridgeHeads.left.x - 1,
@@ -103,7 +105,24 @@ export const createIslands = (totalRows, totalCols) => {
     y: bridgeHeads.right.y,
     sprite: 'assets/sprites/terrain/bridge_head_r.png',
   });
+
+  addRandomAmbientSprites(map, 5);
+
   return map;
+};
+
+export const getRandomTerrainAmbientSprite = () => {
+  const numberOfPossibleSprites = 15;
+  const i = Math.floor(Math.random() * numberOfPossibleSprites).toString().padStart(2, '0');
+  return `assets/sprites/ambient/${i}.png`;
+};
+
+export const addRandomAmbientSprites = (map, count) => {
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * (window.innerWidth / gridSize));
+    const y = Math.floor(Math.random() * (window.innerHeight / gridSize));
+    if (map[y][x] === 0) ambientEffects.terrain.statics.push({ y, x, sprite: getRandomTerrainAmbientSprite() });
+  }
 };
 
 export const findEdges = (terrainMap) => {

@@ -23,6 +23,10 @@ export class Entity {
     this.overrideAnimationState = null;
     this.overrideFrameDuration = 0;
 
+    this.isBeingDragged = false;
+    this.isConfused = false;
+    this.isDrowning = false;
+
     register(this);
   }
 
@@ -68,7 +72,18 @@ export class Character extends Entity {
   }
 
   stepTowards(pos, isPixelPos = false) {
-    if (!pos) return;
+    if (!pos) {
+      this.stop();
+      this.isConfused = true;
+      return;
+    }
+
+    if (this.isDrowning) {
+      this.stop();
+      return;
+    }
+
+    this.isConfused = false;
 
     const x = isPixelPos ? pos.x : pos.x * gridSize;
     const dirX = this.x < x ? 1 : -1;
@@ -93,17 +108,25 @@ export class Character extends Entity {
     if (this.overrideAnimationState !== null) {
       this.animationState = this.overrideAnimationState;
       this.frameDelay = this.overrideFrameDuration;
+      if (this.frame === this.totalFrames - 1) this.overrideAnimationState = null;
+      return;
+    }
 
-      if (this.frame === this.totalFrames - 1) {
-        this.overrideAnimationState = null;
-      }
+    if (this.isDrowning) {
+      this.animationState = 4;
+      return;
+    }
+
+    if (this.isBeingDragged) {
+      this.animationState = 5;
+      return;
+    }
+
+    if (isMoving) {
+      if (this.animationState === 0) this.frame = 0;
+      this.animationState = 1;
     } else {
-      if (isMoving) {
-        if (this.animationState === 0) this.frame = 0;
-        this.animationState = 1;
-      } else {
-        this.animationState = 0;
-      }
+      this.animationState = 0;
     }
   }
 

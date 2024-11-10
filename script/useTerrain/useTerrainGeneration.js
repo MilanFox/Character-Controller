@@ -2,7 +2,15 @@ import { Entity } from '../useEntity/useEntity.classes.js';
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
 import { getTerrainType } from './useTerrain.js';
 
-export const ambientEffects = { background: { entities: [] }, terrain: { statics: [] } };
+export const ambientEffects = {
+  background: { entities: [] }, terrain: {
+    statics: [], cursor: {
+      x: 1,
+      y: 1,
+      sprite: 'assets/ui/marker.png',
+    },
+  },
+};
 
 export const getNeighbors = (pos, useDiagonals) => {
   const neighbors = [
@@ -22,7 +30,7 @@ export const getNeighbors = (pos, useDiagonals) => {
 
     diagonalNeighbors.forEach((diag) => {
       const [adj1, adj2] = diag.adjacent;
-      if (getTerrainType(adj1) >= 0 || getTerrainType(adj2) >= 0) {
+      if (getTerrainType(adj1) === 0 || getTerrainType(adj2) === 0) {
         neighbors.push(diag);
       }
     });

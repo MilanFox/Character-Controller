@@ -12,12 +12,19 @@ since this is very much a playground.
 
 ## What's the current state of the project?
 
-It isn't a 'project' really - more like a playground. So If you like, check it out interact with the little character
-sprite.
+It isn't a 'project' really - more like a playground, I'm ust trying stuff out.
+What is currently supported is, to control the knight with your keyboard and to drag the minion around with your mouse.
+There is no goal or game here... just stuff.
 
 ## I cant use it on mobile
 
 Yes. That's true.. I didn't build any functionality for mobiles or even any portrait mode device.
+
+## Known Bugs
+
+I'm still trying to find out how to work with __diagonal__ pathfinding properly.. The Minion seems to add extra
+unnecessary
+diagonals when the orthogonal path would have been shorter.
 
 ## Credits
 

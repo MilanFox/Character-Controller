@@ -1,25 +1,34 @@
 import { Entity } from '../useEntity/useEntity.classes.js';
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
+import { getTerrainType } from './useTerrain.js';
 
 export const ambientEffects = { background: { entities: [] }, terrain: { statics: [] } };
 
 export const getNeighbors = (pos, useDiagonals) => {
-  if (useDiagonals) return [
-    { x: pos.x, y: pos.y - 1 },
-    { x: pos.x + 1, y: pos.y - 1 },
-    { x: pos.x + 1, y: pos.y },
-    { x: pos.x + 1, y: pos.y + 1 },
-    { x: pos.x, y: pos.y + 1 },
-    { x: pos.x - 1, y: pos.y + 1 },
-    { x: pos.x - 1, y: pos.y },
-    { x: pos.x - 1, y: pos.y - 1 },
+  const neighbors = [
+    { x: pos.x, y: pos.y - 1, cost: 1 },
+    { x: pos.x + 1, y: pos.y, cost: 1 },
+    { x: pos.x, y: pos.y + 1, cost: 1 },
+    { x: pos.x - 1, y: pos.y, cost: 1 },
   ];
-  return [
-    { x: pos.x, y: pos.y - 1 },
-    { x: pos.x + 1, y: pos.y },
-    { x: pos.x, y: pos.y + 1 },
-    { x: pos.x - 1, y: pos.y },
-  ];
+
+  if (useDiagonals) {
+    const diagonalNeighbors = [
+      { x: pos.x + 1, y: pos.y - 1, cost: 1.414, adjacent: [{ x: pos.x + 1, y: pos.y }, { x: pos.x, y: pos.y - 1 }] },
+      { x: pos.x + 1, y: pos.y + 1, cost: 1.414, adjacent: [{ x: pos.x + 1, y: pos.y }, { x: pos.x, y: pos.y + 1 }] },
+      { x: pos.x - 1, y: pos.y + 1, cost: 1.414, adjacent: [{ x: pos.x - 1, y: pos.y }, { x: pos.x, y: pos.y + 1 }] },
+      { x: pos.x - 1, y: pos.y - 1, cost: 1.414, adjacent: [{ x: pos.x - 1, y: pos.y }, { x: pos.x, y: pos.y - 1 }] },
+    ];
+
+    diagonalNeighbors.forEach((diag) => {
+      const [adj1, adj2] = diag.adjacent;
+      if (getTerrainType(adj1) >= 0 || getTerrainType(adj2) >= 0) {
+        neighbors.push(diag);
+      }
+    });
+  }
+
+  return neighbors;
 };
 
 const createIsland = (rows, cols) => {

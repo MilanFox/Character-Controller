@@ -1,6 +1,7 @@
 import { keys } from '../useKeyboard/useKeyboard.js';
 import { register } from './useEntity.js';
 import { findCell, getTerrainType } from '../useTerrain/useTerrain.js';
+import { gridSize } from '../useCanvas/useCanvas.consts.js';
 
 export class Entity {
   constructor({ x = 0, y = 0, width = 128, height = 128, speed = 2, totalFrames = 6, sprite }) {
@@ -18,6 +19,9 @@ export class Entity {
 
     this.spriteSheet = new Image();
     this.spriteSheet.src = sprite;
+
+    this.overrideAnimationState = null;
+    this.overrideFrameDuration = 0;
 
     register(this);
   }
@@ -61,6 +65,18 @@ export class Character extends Entity {
   applyFriction() {
     this.velocityX *= this.friction;
     this.velocityY *= this.friction;
+  }
+
+  stepTowards(pos, isPixelPos = false) {
+    if (!pos) return;
+
+    const x = isPixelPos ? pos.x : pos.x * gridSize;
+    const dirX = this.x < x ? 1 : -1;
+    this.velocityX = this.speed * dirX;
+
+    const y = isPixelPos ? pos.y : pos.y * gridSize;
+    const dirY = this.y < y ? 1 : -1;
+    this.velocityY = this.speed * dirY;
   }
 
   updatePosition() {
@@ -120,5 +136,10 @@ export class Character extends Entity {
 
   get isWalkingBackwards() {
     return this.velocityX < 0;
+  }
+
+  stop() {
+    this.velocityX = 0;
+    this.velocityY = 0;
   }
 }

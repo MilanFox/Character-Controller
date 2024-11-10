@@ -58,4 +58,4 @@ export const getTerrainSprite = ({ pos }) => {
 
 export const findCell = ({ x, y }) => ({ x: Math.floor(x / gridSize), y: Math.floor(y / gridSize) });
 
-export const getTerrainType = ({ x, y }) => terrainMap[y][x];
+export const getTerrainType = ({ x, y }) => terrainMap[y]?.[x];

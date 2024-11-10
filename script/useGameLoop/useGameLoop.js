@@ -2,6 +2,7 @@ import { backgroundAmbientCanvas, drawEntity, entityCanvas } from '../useCanvas/
 import { entities } from '../useEntity/useEntity.js';
 import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
 import { player } from '../usePlayer/usePlayer.js';
+import { minion } from '../useMinion/useMinion.js';
 
 let lastFrameTime = performance.now();
 let fps = 0;
@@ -12,7 +13,10 @@ const drawFrame = () => {
   lastFrameTime = currentFrameTime;
   entityCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
   backgroundAmbientCanvas.getContext('2d').clearRect(0, 0, entityCanvas.width, entityCanvas.height);
-  drawEntity(player, entityCanvas);
+
+  const entities = [minion, player].sort((a, b) => a.y - b.y);
+  entities.forEach(entity => { drawEntity(entity, entityCanvas);});
+
   ambientEffects.background.entities.forEach(effectEntity => drawEntity(effectEntity, backgroundAmbientCanvas));
   entityCanvas.getContext('2d').fillText(`FPS: ${fps}`, 10, 20);
 };

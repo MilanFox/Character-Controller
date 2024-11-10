@@ -49,10 +49,7 @@ export const drawTerrain = () => {
   terrainSpriteSheet.onload = () => {
     for (let x = gridSize; x < window.innerWidth; x += gridSize) {
       for (let y = gridSize; y < window.innerHeight; y += gridSize) {
-        if (terrainMap[y / gridSize][x / gridSize] < 0) {
-          console.log(y, x);
-          continue;
-        }
+        if (terrainMap[y / gridSize][x / gridSize] < 0) continue;
         const pos = { x: x / gridSize, y: y / gridSize };
         const { sx, sy, sWidth, sHeight } = getTerrainSprite({ pos, gridSize });
         ctxTerrain.drawImage(terrainSpriteSheet, sx, sy, sWidth, sHeight, x, y, gridSize, gridSize);

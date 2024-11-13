@@ -14,7 +14,7 @@ The current progress is deployed as https://character-controller-henna.vercel.ap
 It isn't a 'project' really - more like a playground, I'm just trying stuff out.
 What is currently supported is, to control the knight character with your keyboard and to drag the minion around with
 your mouse. The minion will do it's best to get back to you.
-The sword swing doesn't do anything at ll - except for looking intimidating.
+You can bully them around by swinging your sword at them, if you feel like you need some stress relief.
 
 There is no goal or game here other than that.
 

@@ -31,12 +31,15 @@ minion.process = () => {
 
   ambientEffects.terrain.cursor = null;
 
-  if (minion.isDrowning || debugOptions.physics.shouldFreezeMinion.isActive) return;
+  if (!minion.staggerFrames && (minion.isDrowning || debugOptions.physics.shouldFreezeMinion.isActive)) return;
 
   const distance = getHeuristic(minion, player);
-  if (distance > gridSize) {
+
+  minion.updatePosition();
+  minion.applyFriction();
+
+  if (minion.staggerFrames || distance > gridSize) {
     minion.stepTowards(findGridPath([minion, player])?.[1]);
-    minion.updatePosition();
   } else {
     minion.stop();
   }

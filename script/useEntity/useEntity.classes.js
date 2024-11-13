@@ -38,6 +38,8 @@ export class Entity {
     this.isConfused = false;
     this.isDrowning = false;
 
+    this.staggerFrames = 0;
+
     register(this);
   }
 
@@ -90,6 +92,11 @@ export class Character extends Entity {
   }
 
   stepTowards(pos, isPixelPos = false) {
+    if (this.staggerFrames) {
+      this.staggerFrames -= 1;
+      return;
+    }
+
     if (!pos) {
       this.stop();
       this.isConfused = true;
@@ -116,8 +123,8 @@ export class Character extends Entity {
     const nextX = this.x + this.velocityX;
     const nextY = this.y + this.velocityY;
 
-    if (getTerrainType(findCell({ x: nextX, y: this.y })) >= 0) this.x = nextX;
-    if (getTerrainType(findCell({ x: this.x, y: nextY })) >= 0) this.y = nextY;
+    if (getTerrainType(findCell({ x: nextX, y: this.y })) >= 0 || this.staggerFrames) this.x = nextX;
+    if (getTerrainType(findCell({ x: this.x, y: nextY })) >= 0 || this.staggerFrames) this.y = nextY;
   }
 
   updateAnimation() {
@@ -159,6 +166,7 @@ export class Character extends Entity {
   triggerAction(action) {
     const { animationState, frameDuration } = this.actions[action];
     this.setTemporaryAnimation(animationState, frameDuration);
+    this.actions[action].effect();
   }
 
   checkForActionTriggers() {

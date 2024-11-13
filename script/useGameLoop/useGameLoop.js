@@ -4,7 +4,7 @@ import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
 import { player } from '../usePlayer/usePlayer.js';
 import { minion } from '../useMinion/useMinion.js';
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
-import { debugOptions } from '../useDebugging/useDebugging.js';
+import { debugOptions, getDebugOptionsFromLocalStorage } from '../useDebugging/useDebugging.js';
 
 let lastFrameTime = performance.now();
 export let fps = 0;
@@ -58,6 +58,7 @@ const drawDebuggingInfo = (ctx) => {
 };
 
 export const runGameLoop = () => {
+  getDebugOptionsFromLocalStorage();
   entities.forEach(entity => {
     entity.updateFrame();
     entity.process?.();

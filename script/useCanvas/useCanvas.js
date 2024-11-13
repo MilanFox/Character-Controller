@@ -1,6 +1,8 @@
 import { gridSize } from './useCanvas.consts.js';
 import { getTerrainSprite, terrainMap, updateTerrainMap } from '../useTerrain/useTerrain.js';
 import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
+import { minion } from '../useMinion/useMinion.js';
+import { player } from '../usePlayer/usePlayer.js';
 
 export const entityCanvas = document.getElementById('entities');
 export const terrainCanvas = document.getElementById('terrain');
@@ -16,13 +18,17 @@ export const canvasLevels = [
   backgroundAmbientCanvas,
 ];
 
-export const setCanvasSize = () => {
+export const resetCanvas = () => {
   canvasLevels.forEach(level => {
     level.width = window.innerWidth;
     level.height = window.innerHeight;
   });
 
   updateTerrainMap(gridSize);
+
+  minion.initializePosition();
+  player.initializePosition();
+
   drawTerrain();
   drawBackground();
 };

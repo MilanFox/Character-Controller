@@ -31,9 +31,50 @@ canvas {
 
 #tutorial {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 0;
+  height: 64px;
+  vertical-align: center;
+  left: 64px;
   color: white;
   font-family: "Killig", serif;
   font-size: 2rem;
+}
+
+#debug-menu-toggle {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 64px;
+  height: 64px;
+}
+
+#debug-menu-toggle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/icons/debug.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+#debug-menu {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  border: 1px solid black;
+  backdrop-filter: saturate(180%) blur(10px);
+  bottom: 16px;
+  right: 64px;
+  padding: 16px;
+}
+
+.hidden {
+  display: none;
 }

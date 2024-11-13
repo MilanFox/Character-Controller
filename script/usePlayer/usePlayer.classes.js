@@ -3,12 +3,14 @@ import { Character } from '../useEntity/useEntity.classes.js';
 
 export class Player extends Character {
   constructor() {
-    super({
-      sprite: 'assets/sprites/player.png',
-      x: window.innerWidth / 4,
-      y: window.innerHeight / 2,
-    });
+    super({ sprite: 'assets/sprites/player.png' });
+    this.initializePosition();
     this.actions.slash = { animationState: 2, frameDuration: 6, actionKey: keyMap.SpaceKey };
+  }
+
+  initializePosition() {
+    this.x = window.innerWidth / 4;
+    this.y = window.innerHeight / 2;
   }
 
   accelerate() {

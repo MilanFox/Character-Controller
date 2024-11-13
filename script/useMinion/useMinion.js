@@ -4,13 +4,19 @@ import { player } from '../usePlayer/usePlayer.js';
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
 import { ambientEffects } from '../useTerrain/useTerrainGeneration.js';
 import { findCell, getTerrainType } from '../useTerrain/useTerrain.js';
+import { debugOptions } from '../useDebugging/useDebugging.js';
 
 export const minion = new Character({
   sprite: 'assets/sprites/minion.png',
-  x: window.innerWidth * 0.75,
-  y: window.innerHeight / 2,
   speed: 1.25,
 });
+
+minion.initializePosition = () => {
+  minion.x = window.innerWidth * 0.75;
+  minion.y = window.innerHeight / 2;
+};
+
+minion.initializePosition();
 
 minion.process = () => {
   minion.updateAnimation();
@@ -25,7 +31,7 @@ minion.process = () => {
 
   ambientEffects.terrain.cursor = null;
 
-  if (minion.isDrowning) return;
+  if (minion.isDrowning || debugOptions.physics.shouldFreezeMinion.isActive) return;
 
   const distance = getHeuristic(minion, player);
   if (distance > gridSize) {

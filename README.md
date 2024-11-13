@@ -20,8 +20,8 @@ There is no goal or game here other than that.
 
 ## Can I peak behind the curtains?
 
-Sure - I mean, apart from this being open source, there is a global "debugOptions" Object, that you can access through
-your console, which prints additional stuff and gives you some ideas of what's happening.
+Sure - I mean, apart from this being open source, there is a debug menu in the lower right hand corner of the screen,
+which prints out some extra stuff to the canvas to help you (or mostly me) see whats going on.
 
 ## What game engine does this use?
 

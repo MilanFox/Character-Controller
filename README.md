@@ -7,14 +7,46 @@ This repository is for educational purposes and to share and document my approac
 Feel free to explore, modify, and use any code you find here for your own learning and
 projects.
 
-The current progress is deployed as https://character-controller-henna.vercel.app/, but might change at any point,
-since this is very much a playground.
+The current progress is deployed as https://character-controller-henna.vercel.app/.
 
 ## What's the current state of the project?
 
-It isn't a 'project' really - more like a playground, I'm ust trying stuff out.
-What is currently supported is, to control the knight with your keyboard and to drag the minion around with your mouse.
-There is no goal or game here... just stuff.
+It isn't a 'project' really - more like a playground, I'm just trying stuff out.
+What is currently supported is, to control the knight character with your keyboard and to drag the minion around with
+your mouse. The minion will do it's best to get back to you.
+The sword swing doesn't do anything at ll - except for looking intimidating.
+
+There is no goal or game here other than that.
+
+## Can I peak behind the curtains?
+
+Sure - I mean, apart from this being open source, there is a global "debugOptions" Object, that you can access through
+your console, which prints additional stuff and gives you some ideas of what's happening.
+
+## What game engine does this use?
+
+None - or a custom-built one, depending on how you want to look at it. I thought it might be fun to start without any
+libraries and just create functions when I need them.
+I just draw everything onto several layers
+of [HTML Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
+
+Is that a _smart_ idea? Probably no.  
+Was it _fun_? Sure!
+
+## What optimizations are there to make it run smooth?
+
+I am using [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) to
+keep in sync with the PCs framerate and to get some extra Browser optimizations that come with animationFrames.
+Right now I am not calculating [Delta Time](https://de.wikipedia.org/wiki/Delta_Time), so the whole engine will speed up
+and slow down with your PCs frame rate. I might do so in the future, but this isn't supposed to have an endgoal.. It was
+just fun to build.
+
+The Pathfinding Algo is the
+same [A* Implementation as in my other Repo](https://github.com/MilanFox/Pathfinder-Playground), which is as optimized
+as it gets.
+
+Also, only Layers that are expected to have dynamic data entities are included in
+the [Game Loop](https://de.wikipedia.org/wiki/Game_Loop). All others are static.
 
 ## I cant use it on mobile
 

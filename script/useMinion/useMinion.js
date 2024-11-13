@@ -14,7 +14,8 @@ export const minion = new Character({
 
 minion.process = () => {
   minion.updateAnimation();
-  minion.isDrowning = minion.isBeingDragged ? false : getTerrainType(findCell(minion)) < 0;
+  const terrainType = getTerrainType(findCell(minion));
+  minion.isDrowning = minion.isBeingDragged ? false : terrainType < 0 || terrainType === undefined;
 
   if (minion.isBeingDragged) {
     const { x, y } = findCell(minion);

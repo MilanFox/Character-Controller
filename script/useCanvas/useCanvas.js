@@ -29,14 +29,14 @@ export const setCanvasSize = () => {
 
 export const drawEntity = (entity, canvas) => {
   const ctx = canvas.getContext('2d');
-  const { sprite, sx, sy, sWidth, sHeight, dx, dy, dHeight, dWidth } = entity.sprite;
+  const { sprite, sx, sy, sWidth, sHeight, dx, dy, dHeight, dWidth, offset } = entity.sprite;
   ctx.save();
 
   if (entity.isWalkingBackwards) {
     ctx.scale(-1, 1);
-    ctx.drawImage(sprite, sx, sy, sWidth, sHeight, -dx - dWidth, dy, dHeight, dWidth);
+    ctx.drawImage(sprite, sx, sy, sWidth, sHeight, -dx - dWidth + offset.x, dy + offset.y, dHeight, dWidth);
   } else {
-    ctx.drawImage(sprite, sx, sy, sWidth, sHeight, dx, dy, dHeight, dWidth);
+    ctx.drawImage(sprite, sx, sy, sWidth, sHeight, dx + offset.x, dy + offset.y, dHeight, dWidth);
   }
 
   ctx.restore();

@@ -20,12 +20,6 @@ There is no goal or game here... just stuff.
 
 Yes. That's true.. I didn't build any functionality for mobiles or even any portrait mode device.
 
-## Known Bugs
-
-I'm still trying to find out how to work with __diagonal__ pathfinding properly.. The Minion seems to add extra
-unnecessary
-diagonals when the orthogonal path would have been shorter.
-
 ## Credits
 
 While all the code has been hand-written by me the sprites of course weren't made by me. I am

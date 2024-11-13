@@ -129,8 +129,8 @@ export const createIslands = (totalRows, totalCols) => {
 };
 
 export const getRandomTerrainAmbientSprite = () => {
-  const numberOfPossibleSprites = 15;
-  const i = Math.floor(Math.random() * numberOfPossibleSprites).toString().padStart(2, '0');
+  const numberOfPossibleSprites = 14;
+  const i = (Math.floor(Math.random() * numberOfPossibleSprites) + 1).toString().padStart(2, '0');
   return `assets/sprites/ambient/${i}.png`;
 };
 

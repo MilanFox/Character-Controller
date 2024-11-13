@@ -1,12 +1,22 @@
 import { keys } from '../useKeyboard/useKeyboard.js';
 import { register } from './useEntity.js';
-import { findCell, getTerrainType } from '../useTerrain/useTerrain.js';
+import { findCell, getTerrainType, terrainMap } from '../useTerrain/useTerrain.js';
 import { gridSize } from '../useCanvas/useCanvas.consts.js';
 
 export class Entity {
-  constructor({ x = 0, y = 0, width = 128, height = 128, speed = 2, totalFrames = 6, sprite }) {
+  constructor({
+                x = 0,
+                y = 0,
+                width = 128,
+                height = 128,
+                speed = 2,
+                totalFrames = 6,
+                sprite,
+                spriteOffset = { x: 0, y: 0 },
+              }) {
     this.x = x;
     this.y = y;
+
     this.width = width;
     this.height = height;
     this.speed = speed;
@@ -19,6 +29,7 @@ export class Entity {
 
     this.spriteSheet = new Image();
     this.spriteSheet.src = sprite;
+    this.spriteOffset = spriteOffset;
 
     this.overrideAnimationState = null;
     this.overrideFrameDuration = 0;
@@ -53,6 +64,7 @@ export class Entity {
       dy: this.y - (this.height / 2),
       dWidth: this.width,
       dHeight: this.height,
+      offset: this.spriteOffset,
     };
   }
 
@@ -64,6 +76,12 @@ export class Character extends Entity {
     this.velocityX = 0;
     this.velocityY = 0;
     this.friction = 0.9;
+    this.spriteOffset = { x: 0, y: -20 };
+  }
+
+  get isInBounds() {
+    const { x, y } = findCell(this);
+    return terrainMap[y]?.[x] !== undefined;
   }
 
   applyFriction() {
@@ -85,11 +103,11 @@ export class Character extends Entity {
 
     this.isConfused = false;
 
-    const x = isPixelPos ? pos.x : pos.x * gridSize;
+    const x = isPixelPos ? pos.x : pos.x * gridSize + (gridSize / 2);
     const dirX = this.x < x ? 1 : -1;
     this.velocityX = this.speed * dirX;
 
-    const y = isPixelPos ? pos.y : pos.y * gridSize;
+    const y = isPixelPos ? pos.y : pos.y * gridSize + (gridSize / 2);
     const dirY = this.y < y ? 1 : -1;
     this.velocityY = this.speed * dirY;
   }

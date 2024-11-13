@@ -3,7 +3,11 @@ import { Character } from '../useEntity/useEntity.classes.js';
 
 export class Player extends Character {
   constructor() {
-    super({ sprite: 'assets/sprites/player.png', x: window.innerWidth / 4, y: window.innerHeight / 2 });
+    super({
+      sprite: 'assets/sprites/player.png',
+      x: window.innerWidth / 4,
+      y: window.innerHeight / 2,
+    });
     this.actions.slash = { animationState: 2, frameDuration: 6, actionKey: keyMap.SpaceKey };
   }
 

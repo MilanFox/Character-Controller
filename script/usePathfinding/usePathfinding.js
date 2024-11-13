@@ -15,7 +15,8 @@ const getPosFromHash = (hash) => {
 export const getHeuristic = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 
 export const findGridPath = ([entityStart, entityGoal]) => {
-  if (!entityStart || !entityGoal) return;
+  if ([entityStart, entityGoal].some(entity => !entity?.isInBounds)) return;
+
   const self = getGridInfo(entityStart, true);
   const target = getGridInfo(entityGoal, true);
   const openSet = new Set([self.hash]);
